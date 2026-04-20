@@ -1,6 +1,8 @@
 const jwt = require("jsonwebtoken");
 const generateToken = require("../../generateToken");
 
+const isProduction = process.env.NODE_ENV === "production";
+
 const loginAdmin = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -26,8 +28,8 @@ const loginAdmin = async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
@@ -46,8 +48,8 @@ const loginAdmin = async (req, res) => {
 const logoutAdmin = async (req, res) => {
   res.clearCookie("token", {
     httpOnly: true,
-    secure: false,
-    sameSite: "lax",
+    secure: isProduction,
+    sameSite: isProduction ? "none" : "lax",
   });
 
   return res.status(200).json({
