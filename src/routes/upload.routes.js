@@ -7,6 +7,6 @@ const {
 } = require("../config/controllers/upload.controller");
 
 router.post("/single", upload.single("image"), uploadSingleImage);
-router.post("/multiple", upload.array("images"), uploadMultipleImages);
+router.post("/multiple", upload.array("images", 10), uploadMultipleImages);
 
 module.exports = router;
